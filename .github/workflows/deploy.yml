@@ -1,5 +1,10 @@
 name: Deploy to GitHub Pages and Render Cloud
 
+permissions:
+  id-token: write
+  pages: write
+  contents: read
+
 on:
   push:
     branches:
