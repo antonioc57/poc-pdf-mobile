@@ -13,6 +13,8 @@ on:
 jobs:
   deploy-react-app:
     name: Deploy React App
+    environment:
+      name: github-pages
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
