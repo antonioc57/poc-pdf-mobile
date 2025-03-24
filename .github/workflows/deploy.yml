@@ -1,0 +1,55 @@
+name: Deploy to GitHub Pages and Render Cloud
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy-react-app:
+    name: Deploy React App
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: Install dependencies
+        working-directory: apps/react-pdf-mobile
+        run: yarn install
+
+      - name: Build React app
+        working-directory: apps/react-pdf-mobile
+        run: yarn build
+
+      - name: Deploy to GitHub Pages
+        uses: actions/deploy-pages@v4
+
+  deploy-service:
+    name: Deploy Service
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: Install dependencies
+        working-directory: service-pdf
+        run: yarn install
+
+      - name: Build service
+        working-directory: service-pdf
+        run: yarn build
+
+      - name: Deploy to Render Cloud
+        run: curl -X POST https://api.render.com/deploy/srv-cn5qj86m42jqkqi5j6bg?key=${{ secrets.RENDER_API_KEY }}
+        env:
+          RENDER_API_KEY: ${{ secrets.RENDER_API_KEY }}
